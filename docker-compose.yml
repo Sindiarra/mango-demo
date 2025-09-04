@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  mongo_db:
+    image: mongo:7.0
+    container_name: mongo_db
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ada
+      MONGO_INITDB_ROOT_PASSWORD: ada
+    volumes:
+      - mongo_data:/data/db
+
+  mongo_express:
+    image: mongo-express:1.0.0
+    container_name: mongo_express
+    depends_on:
+      - mongo_db
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ada
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ada
+      ME_CONFIG_MONGODB_SERVER: mongo_db
+
+  mango_demo:
+    build: .
+    container_name: mango_demo
+    ports:
+      - "8090:8090"
+    environment:
+      SPRING_DATA_MONGODB_HOST: mongo_db
+      SPRING_DATA_MONGODB_PORT: 27017
+      SPRING_DATA_MONGODB_DATABASE: productdb
+      SPRING_DATA_MONGODB_USERNAME: ada
+      SPRING_DATA_MONGODB_PASSWORD: ada
+      SPRING_DATA_MONGODB_AUTHENTICATION-DATABASE: admin
+    depends_on:
+      - mongo_db
+
+volumes:
+  mongo_data:

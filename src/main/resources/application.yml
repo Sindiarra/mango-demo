@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: Mango-Demo
+  data:
+    mongodb:
+      host: mongo_db        # nom du service Docker défini dans docker-compose
+      port: 27017
+      database: productdb
+      username: ada
+      password: ada
+      authentication-database: admin
+      auto-index-creation: true
+
+server:
+  port: 8090
